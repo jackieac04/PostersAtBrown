@@ -15,7 +15,7 @@ public class VisionConfig {
     @Bean
     public ImageAnnotatorClient imageAnnotatorClient() throws IOException {
         ImageAnnotatorSettings settings = ImageAnnotatorSettings.newBuilder()
-                .setEndpoint("vision.googleapis.com:443") // Set the endpoint explicitly
+                .setEndpoint("vision.googleapis.com:443")
                 .build();
         return ImageAnnotatorClient.create(settings);
     }

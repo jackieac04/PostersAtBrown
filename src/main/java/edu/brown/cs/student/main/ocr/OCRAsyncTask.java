@@ -41,6 +41,6 @@ public class OCRAsyncTask {
       return suggestedFields;
     }
 
-    return new HashMap<>(); // to be replaced with suggested fields
+    return new HashMap<>();
   }
 }
