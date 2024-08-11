@@ -89,10 +89,6 @@ export const ProfileImageCard: React.FC<ProfileImageCardProps> = ({
   const [, setPosterSrc] = useRecoilState(posterSrcState);
   const [popModalOpen, setPopModalOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    console.log("popup modal is: " + popModalOpen);
-  }, [popModalOpen]);
-
   const fetchSaved = async (profile: { id: string }, posterId: string) => {
     try {
       //fetch savedposters
@@ -122,9 +118,7 @@ export const ProfileImageCard: React.FC<ProfileImageCardProps> = ({
       //get each poster given id then set created
       const newCreatedPosters = [];
       for (const poster of created.data) {
-        const postersResp = await fetch(
-          BACKEND + "posters/" + poster.id
-        );
+        const postersResp = await fetch(BACKEND + "posters/" + poster.id);
         if (postersResp.ok) {
           const posterData = await postersResp.json();
           newCreatedPosters.push(posterData.data);
@@ -170,7 +164,8 @@ export const ProfileImageCard: React.FC<ProfileImageCardProps> = ({
             },
           };
           const url =
-            BACKEND + "users/unsavePoster?posterId=" +
+            BACKEND +
+            "users/unsavePoster?posterId=" +
             id +
             "&userId=" +
             userId.id;
@@ -202,7 +197,8 @@ export const ProfileImageCard: React.FC<ProfileImageCardProps> = ({
             },
           };
           const url =
-            BACKEND + "users/savePoster?posterId=" +
+            BACKEND +
+            "users/savePoster?posterId=" +
             id +
             "&userId=" +
             userId.id;

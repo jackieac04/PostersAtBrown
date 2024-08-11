@@ -30,10 +30,6 @@ export default function PopupModal({ posterId, setPopModalOpen }: popupProps) {
   const [, setPosterSrc] = useRecoilState(posterSrcState);
   const [refresh, setRefresh] = useRecoilState(refreshState);
 
-  useEffect(() => {
-    console.log("id: " + posterId);
-  }, []);
-
   // const getPoster = async () => {
   //   try {
   //     const url = BACKEND + "posters/" + posterId;

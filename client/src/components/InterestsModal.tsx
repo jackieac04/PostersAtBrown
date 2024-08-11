@@ -23,7 +23,6 @@ export default function InterestsModal({
   useEffect(() => {
     if (page) {
       setLocalProfile(profile);
-      console.log(localProfile);
       selectExistingInterests(profile.interests);
     }
   }, []);
@@ -44,10 +43,6 @@ export default function InterestsModal({
     }
   }, []);
 
-  useEffect(() => {
-    console.log(profile);
-  }, [profile]);
-
   function selectExistingInterests(currInterests: Set<string>) {
     //using functional form of setTags so that all existing user interests are actually selected upon mounting
     setTags((prevInterests) => {
@@ -63,7 +58,6 @@ export default function InterestsModal({
 
   const onClick = (tag: string) => {
     // if in tags list, take out
-    console.log(tags);
     setTags((prevTags) => {
       // using functional form of setTags so that onClick is updating the actual latest state of tags; otherwise always a step behind
       const updatedTags = new Set(prevTags); // Create a new set from the previous tags
@@ -74,7 +68,6 @@ export default function InterestsModal({
         updatedTags.add(tag); // If the tag doesn't exist, add it to the set
       }
 
-      console.log(updatedTags);
       return updatedTags; // Return the updated set
     });
   };
@@ -97,7 +90,6 @@ export default function InterestsModal({
     }
     //if on home page = false
     if (!page) {
-      console.log("reached!");
       return await createUser(updatedProfile, onClose);
     }
     onClose();

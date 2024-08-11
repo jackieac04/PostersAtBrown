@@ -40,7 +40,7 @@ export default function Archive() {
       mappedPosters[poster.startDate[0]].push(poster);
     }
     setPosters(mappedPosters);
-    console.log(mappedPosters);
+    // console.log(mappedPosters);
   }
 
   async function getArchive() {

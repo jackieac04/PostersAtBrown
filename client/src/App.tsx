@@ -92,9 +92,9 @@ export default function App() {
             setIsLoading(true);
             //check if user exists in the database with get user by id
             const userID = userInfo.id;
-            console.log("user id is: " + userID);
+            // console.log("user id is: " + userID);
             const found = await findUser(userID); //does the user exist?
-            console.log("is user found: " + found);
+            // console.log("is user found: " + found);
             if (!found) {
               //new user
               localStorage.setItem(
@@ -102,8 +102,8 @@ export default function App() {
                 localStorage.getItem("userProfileInitial")!
               );
               setProfile(userInfo); //set prof to google state
-              console.log("profile set to user info");
-              console.log(userInfo);
+              // console.log("profile set to user info");
+              // console.log(userInfo);
               setIsLoading(false);
               setInterestsState(true); //open interests modal
             }

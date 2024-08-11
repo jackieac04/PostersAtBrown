@@ -106,7 +106,6 @@ export const ImageCard: React.FC<ImageCardProps> = ({
   };
 
   const onClickView = async () => {
-    console.log("on close");
     setModalOpen("");
     await fetchSavedOnClose();
   };

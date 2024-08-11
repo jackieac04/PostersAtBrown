@@ -78,9 +78,7 @@ export const fetchSaved = async (userId, id, className) => {
       //compare id passed in to each poster in set
 
       posterSet.data.forEach((poster) => {
-        console.log(poster.id === id);
         if (poster.id === id) {
-          console.log("hello");
           document.querySelector(className)!.classList.add("clicked");
         }
       });

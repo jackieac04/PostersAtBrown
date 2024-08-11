@@ -143,8 +143,6 @@ export default function Happenings() {
       // if user selects soonest or sort, which should sort by soonest by default
 
       getPosters().then((data) => {
-        console.log("data");
-        console.log(data);
         setSearchResults(data);
         setIsLoading(false);
       });
