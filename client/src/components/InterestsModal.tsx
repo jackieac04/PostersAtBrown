@@ -5,6 +5,7 @@ import { profileState } from "./atoms/atoms";
 import { useRecoilState } from "recoil";
 import "../styles/Modal.css";
 import axios from "axios";
+import { BACKEND } from "../vars";
 
 export default function InterestsModal({
   savedPosters = [],
@@ -121,7 +122,7 @@ export default function InterestsModal({
         },
         withCredentials: true,
       };
-      const url = "http://localhost:8080/users/update/" + profile.id;
+      const url = BACKEND + "users/update/" + profile.id;
 
       const res = await axios.put(url, updatedUser, config);
 

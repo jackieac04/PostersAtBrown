@@ -20,7 +20,7 @@ public class SecurityConfig {
     http.csrf(
             AbstractHttpConfigurer
                 ::disable) // Disable CSRF protection for simplicity in this example
-        .authorizeRequests(
+        .authorizeHttpRequests(
             auth -> auth.anyRequest().permitAll() // Allow all requests without authentication
             )
         .httpBasic(AbstractHttpConfigurer::disable) // Disable HTTP Basic authentication

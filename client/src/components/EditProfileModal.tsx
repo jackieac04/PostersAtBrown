@@ -13,6 +13,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import InterestsModal from "./InterestsModal";
 import { IUser, createUser } from "../functions/fetch";
+import { BACKEND } from "../vars";
 
 export default function EditProfileModal({
   savedPosters,
@@ -32,7 +33,7 @@ export default function EditProfileModal({
 
     setIsLoading(true);
     try {
-      const url = "http://localhost:8080/posters/uploadToImgur";
+      const url = BACKEND + "posters/uploadToImgur";
 
       const formData = new FormData();
       console.log(file);

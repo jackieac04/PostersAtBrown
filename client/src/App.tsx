@@ -27,6 +27,7 @@ import Profile from "./components/Profile";
 import { modalOpenState, profileState } from "./components/atoms/atoms";
 import { useRecoilState } from "recoil";
 import InterestsModal from "./components/InterestsModal";
+import { BACKEND } from "./vars";
 
 export default function App() {
   const [modalOpen, setModalOpen] = useRecoilState<string>(modalOpenState);
@@ -45,7 +46,7 @@ export default function App() {
   const findUser = async (id: string) => {
     if (id) {
       //if user id exists
-      const foundUser = await fetch("http://localhost:8080/users/" + id);
+      const foundUser = await fetch(BACKEND + "users/" + id);
 
       if (foundUser.ok) {
         const userValid = await foundUser.json();

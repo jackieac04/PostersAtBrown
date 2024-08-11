@@ -5,6 +5,7 @@ import "../styles/ImageCard.css";
 import "../styles/Modal.css";
 import axios from "axios";
 import ViewPosterModal from "./ViewPosterModal";
+import { BACKEND } from "../vars";
 
 interface ImageCardProps {
   title: string;
@@ -75,7 +76,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
     try {
       //fetch savedposters
       const savedPosters = await fetch(
-        "http://localhost:8080/users/savedPosters/" + profile.id
+        BACKEND + "users/savedPosters/" + profile.id
       );
       // console.log(savedPosters);
       //if poster in saved , set class to clicked
@@ -128,7 +129,8 @@ export const ImageCard: React.FC<ImageCardProps> = ({
             },
           };
           const url =
-            "http://localhost:8080/users/unsavePoster?posterId=" +
+            BACKEND +
+            "users/unsavePoster?posterId=" +
             id +
             "&userId=" +
             userId.id;
@@ -160,7 +162,8 @@ export const ImageCard: React.FC<ImageCardProps> = ({
             },
           };
           const url =
-            "http://localhost:8080/users/savePoster?posterId=" +
+            BACKEND +
+            "users/savePoster?posterId=" +
             id +
             "&userId=" +
             userId.id;

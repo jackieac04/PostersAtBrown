@@ -27,6 +27,7 @@ import { classNameTag, fetchTags, scrollToTop } from "../functions/fetch";
 import Masonry from "masonry-layout";
 import imagesLoaded from "imagesloaded";
 import { ImageCard } from "./ImageCard";
+import { BACKEND } from "../vars";
 
 export interface IPoster {
   content: string;
@@ -45,7 +46,7 @@ export interface IPoster {
 
 export async function getPosters() {
   try {
-    const url = "http://localhost:8080/posters/upcoming";
+    const url = BACKEND + "posters/upcoming";
     const res = await axios.get<IPoster[]>(url);
     return Promise.resolve(res.data);
   } catch (error) {
@@ -62,7 +63,7 @@ export async function getPosters() {
 
 export async function getNewestPosters() {
   try {
-    const url = "http://localhost:8080/posters/upcomingnew";
+    const url = BACKEND + "posters/upcomingnew";
     const res = await axios.get<IPoster[]>(url);
     return Promise.resolve(res.data);
   } catch (error) {
@@ -79,7 +80,7 @@ export async function getNewestPosters() {
 
 async function getRelevantPosters(id: string) {
   try {
-    const url = "http://localhost:8080/posters/relevant?userId=" + id;
+    const url = BACKEND + "posters/relevant?userId=" + id;
     const res = await axios.get<IPoster[]>(url);
     return Promise.resolve(res.data);
   } catch (error) {
@@ -209,7 +210,7 @@ export default function Happenings() {
 
       try {
         const response = await fetch(
-          `http://localhost:8080/posters/tag?tag=${tagString}`
+          BACKEND + `posters/tag?tag=${tagString}`
         );
 
         if (!response.ok) {
@@ -233,7 +234,7 @@ export default function Happenings() {
         tagString = tagString.slice(0, -1);
 
         const response = await fetch(
-          `http://localhost:8080/posters/term?term=${searchInput}&tags=${tagString}`
+          BACKEND + `posters/term?term=${searchInput}&tags=${tagString}`
         );
 
         if (!response.ok) {

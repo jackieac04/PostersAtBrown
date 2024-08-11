@@ -10,6 +10,7 @@ import Masonry from "masonry-layout";
 import imagesLoaded from "imagesloaded";
 import React from "react";
 import { IPoster } from "./Happenings";
+import { BACKEND } from "../vars";
 
 export default function Archive() {
   const [searchResults, setSearchResults] = useState<IPoster[]>([]);
@@ -44,7 +45,7 @@ export default function Archive() {
 
   async function getArchive() {
     try {
-      const url = "http://localhost:8080/posters/archive";
+      const url = BACKEND + "posters/archive";
       const res = await axios.get<IPoster[]>(url);
       mapPosters(res.data);
       return Promise.resolve(res.data);

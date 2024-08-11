@@ -14,6 +14,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { getPosters } from "./Happenings";
 import { IPosterObject } from "./CreateImageModal";
 import ErrorPopup from "./ErrorPopup";
+import { BACKEND } from "../vars";
 
 interface tagsProps {
   onClose: () => void;
@@ -73,7 +74,7 @@ export default function TagsModal({
           id = poster.id;
         }
         console.log(id);
-        const url = "http://localhost:8080/posters/" + id;
+        const url = BACKEND + "posters/" + id;
         const res = await fetch(url);
         console.log(res);
         if (res.ok) {
@@ -85,8 +86,7 @@ export default function TagsModal({
             return "poster";
           } else {
             try {
-              const url =
-                "http://localhost:8080/drafts/" + draftId ? draftId : poster.id;
+              const url = BACKEND + "drafts/" + draftId ? draftId : poster.id;
               const res = await fetch(url);
               // console.log(res);
               if (res.ok) {
@@ -177,8 +177,8 @@ export default function TagsModal({
       };
       console.log(draftId);
       const url = draftId
-        ? `http://localhost:8080/posters/create/${draftId}`
-        : `http://localhost:8080/posters/create/${updatedPoster.id}`;
+        ? BACKEND + `posters/create/${draftId}`
+        : BACKEND + `posters/create/${updatedPoster.id}`;
       const formData = new FormData();
 
       tags.forEach((tag) => {
@@ -225,7 +225,7 @@ export default function TagsModal({
         },
       };
       console.log(poster.id);
-      const url = `http://localhost:8080/posters/update/${
+      const url = BACKEND + `posters/update/${
         draftId ? draftId : poster.id
       }`;
       console.log(url);

@@ -22,6 +22,7 @@ import CalendarModal from "./CalendarModal";
 import InterestsModal from "./InterestsModal";
 import { ProfileImageCard } from "./ProfileImageCard";
 import EditProfileModal from "./EditProfileModal";
+import { BACKEND } from "../vars";
 
 export default function Profile() {
   const [profile] = useRecoilState(profileState);
@@ -77,9 +78,7 @@ export default function Profile() {
   }, [createdPosters, savedPosters, drafts]);
 
   const getUserLikes = async () => {
-    const likesResp = await fetch(
-      "http://localhost:8080/users/savedPosters/" + profile.id
-    );
+    const likesResp = await fetch(BACKEND + "users/savedPosters/" + profile.id);
     if (likesResp.ok) {
       const likes = await likesResp.json();
       setSavedPosters(likes.data);
@@ -90,7 +89,7 @@ export default function Profile() {
 
   const getUserCreated = async () => {
     const createdResp = await fetch(
-      "http://localhost:8080/users/createdPosters/" + profile.id
+      BACKEND + "users/createdPosters/" + profile.id
     );
     if (createdResp.ok) {
       const created = await createdResp.json();
@@ -98,9 +97,7 @@ export default function Profile() {
       //get each poster given id then set created
       const newCreatedPosters = [];
       for (const poster of created.data) {
-        const postersResp = await fetch(
-          "http://localhost:8080/posters/" + poster.id
-        );
+        const postersResp = await fetch(BACKEND + "posters/" + poster.id);
         if (postersResp.ok) {
           const posterData = await postersResp.json();
           newCreatedPosters.push(posterData.data);
@@ -112,18 +109,14 @@ export default function Profile() {
   };
 
   const getUserDrafts = async () => {
-    const draftsres = await fetch(
-      "http://localhost:8080/users/drafts/" + profile.id
-    );
+    const draftsres = await fetch(BACKEND + "users/drafts/" + profile.id);
     if (draftsres.ok) {
       const drafts = await draftsres.json();
       setDraftsCount(drafts.data.length);
       //get each poster given id then set created
       const newDrafts = [];
       for (const poster of drafts.data) {
-        const postersResp = await fetch(
-          "http://localhost:8080/drafts/" + poster.id
-        );
+        const postersResp = await fetch(BACKEND + "drafts/" + poster.id);
         if (postersResp.ok) {
           const posterData = await postersResp.json();
           newDrafts.push(posterData.data);
@@ -136,7 +129,7 @@ export default function Profile() {
 
   const getUserInterests = async () => {
     //find user by id
-    const userResp = await fetch("http://localhost:8080/users/" + profile.id);
+    const userResp = await fetch(BACKEND + "users/" + profile.id);
     if (userResp.ok) {
       const user = await userResp.json();
       setInterests(user.data.interests);

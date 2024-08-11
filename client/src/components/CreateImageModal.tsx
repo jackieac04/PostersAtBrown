@@ -24,6 +24,7 @@ import {
 } from "./atoms/atoms";
 import { useRecoilState } from "recoil";
 import PopupModal from "./PopupModal";
+import { BACKEND } from "../vars";
 
 export interface IPosterObject {
   id: string;
@@ -74,7 +75,7 @@ export default function CreateImageModal() {
         id = poster.id;
       }
       console.log(id);
-      const url = "http://localhost:8080/posters/" + id;
+      const url = BACKEND + "posters/" + id;
       const res = await fetch(url);
       console.log(res);
       if (res.ok) {
@@ -88,8 +89,7 @@ export default function CreateImageModal() {
           return "poster";
         } else {
           try {
-            const url =
-              "http://localhost:8080/drafts/" + draftId ? draftId : poster.id;
+            const url = BACKEND + "drafts/" + draftId ? draftId : poster.id;
             const res = await fetch(url);
             if (res.ok) {
               const posterData = await res.json();
@@ -145,7 +145,7 @@ export default function CreateImageModal() {
   const setCVFields = async (id: string) => {
     setIsLoading(true);
     try {
-      const url = "http://localhost:8080/drafts/" + id;
+      const url = BACKEND + "drafts/" + id;
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -190,7 +190,7 @@ export default function CreateImageModal() {
           },
         };
         const url =
-          "http://localhost:8080/drafts/draft/fromlink?userId=" +
+          BACKEND + "drafts/draft/fromlink?userId=" +
           profile.id +
           "&startDate=" +
           poster.startDate!;
@@ -226,7 +226,7 @@ export default function CreateImageModal() {
     };
 
     try {
-      const url = "http://localhost:8080/drafts/draft/imgur";
+      const url = BACKEND + "drafts/draft/imgur";
 
       const formData = new FormData();
       formData.append("content", file);
@@ -288,7 +288,7 @@ export default function CreateImageModal() {
   const updatePoster = async (poster: IPosterObject, id: string) => {
     console.log(id);
     try {
-      const url = "http://localhost:8080/posters/update/" + id;
+      const url = BACKEND + "posters/update/" + id;
       const config = {
         headers: {
           "Content-Type": "application/json",
