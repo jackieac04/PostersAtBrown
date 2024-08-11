@@ -16,7 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 /** This class defines the mappings and endpoints for poster management */
 @RestController
 @RequestMapping(value = "/drafts") // maps the controller to the "/posters" endpoint.
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "https://posters-at-brown.vercel.app/","https://postersatbrown.com", "http://postersatbrown.com",
+        "www.postersatbrown.com","postersatbrown.com"})
 public class DraftController {
 
   private final DraftService draftService; // instance of the class that does all the dirty work
