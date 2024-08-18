@@ -13,6 +13,7 @@ public class CorsConfig {
     return new WebMvcConfigurer() {
       @Override
       public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedMethods("*").allowedOrigins("*");
         registry
             .addMapping("/users/create") // Map specific endpoint
             .allowedOrigins("https://posters-at-brown.vercel.app/","https://postersatbrown.com", "http://postersatbrown.com",
@@ -67,6 +68,9 @@ public class CorsConfig {
             .allowedHeaders("*")
             .allowCredentials(true)
             .maxAge(3600);
+        registry.addMapping("/greeting-javaconfig").allowedOrigins("https://posters-at-brown.vercel.app/","https://postersatbrown.com", "http://postersatbrown.com",
+                "www.postersatbrown.com","postersatbrown.com", "http://localhost:5173");
+
       }
     };
   }
