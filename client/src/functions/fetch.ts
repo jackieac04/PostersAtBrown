@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { IPoster } from "../components/Happenings";
+import { BACKEND } from "../vars";
 
 export interface IUser {
   id?: string;
@@ -16,7 +17,7 @@ export interface IUser {
 
 export async function fetchTags() {
   try {
-    const response = await fetch("http://localhost:8080/posters/alltags");
+    const response = await fetch(BACKEND + "posters/alltags");
     if (response.ok) {
       const tagsData = await response.json();
       return tagsData;
@@ -50,7 +51,7 @@ export async function createUser(profile, onClose) {
     };
 
     //if home page:
-    const url = "http://localhost:8080/users/create";
+    const url = BACKEND + "users/create";
 
     const res = await axios.post(url, user, config);
     // console.log("inside creatUser res", res);
@@ -69,7 +70,7 @@ export const fetchSaved = async (userId, id, className) => {
   try {
     //fetch savedposters
     const savedPosters = await fetch(
-      "http://localhost:8080/users/savedPosters/" + userId.id
+      BACKEND + "users/savedPosters/" + userId.id
     );
     //if poster in saved , set class to clicked
     if (savedPosters.ok) {
@@ -77,9 +78,7 @@ export const fetchSaved = async (userId, id, className) => {
       //compare id passed in to each poster in set
 
       posterSet.data.forEach((poster) => {
-        console.log(poster.id === id);
         if (poster.id === id) {
-          console.log("hello");
           document.querySelector(className)!.classList.add("clicked");
         }
       });

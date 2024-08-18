@@ -20,7 +20,7 @@ public class SecurityConfig {
     http.csrf(
             AbstractHttpConfigurer
                 ::disable) // Disable CSRF protection for simplicity in this example
-        .authorizeRequests(
+        .authorizeHttpRequests(
             auth -> auth.anyRequest().permitAll() // Allow all requests without authentication
             )
         .httpBasic(AbstractHttpConfigurer::disable) // Disable HTTP Basic authentication
@@ -32,11 +32,10 @@ public class SecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("*"));
-    configuration.setAllowedMethods(
-        Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-    configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
-    configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
+    configuration.addAllowedOrigin("*"); // Allow all origins for testing
+    configuration.addAllowedMethod("*"); // Allow all HTTP methods
+    configuration.addAllowedHeader("*"); // Allow all headers
+
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;

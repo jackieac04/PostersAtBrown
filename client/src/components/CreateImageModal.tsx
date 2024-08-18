@@ -24,6 +24,7 @@ import {
 } from "./atoms/atoms";
 import { useRecoilState } from "recoil";
 import PopupModal from "./PopupModal";
+import { BACKEND } from "../vars";
 
 export interface IPosterObject {
   id: string;
@@ -58,7 +59,7 @@ export default function CreateImageModal() {
     const yyyy = today.getFullYear();
     //defaults to current date at 11:59PM + ensures startDate will always be filled with some value
     const todayDateTime = yyyy + "-" + mm + "-" + dd + "T23:59";
-    console.log(poster);
+    // console.log(poster);
     setPoster({ ...poster, startDate: todayDateTime, isRecurring: "NEVER" });
   }, []);
 
@@ -73,28 +74,21 @@ export default function CreateImageModal() {
       } else {
         id = poster.id;
       }
-      console.log(id);
-      const url = "http://localhost:8080/posters/" + id;
+      const url = BACKEND + "posters/" + id;
       const res = await fetch(url);
-      console.log(res);
       if (res.ok) {
         const posterData = await res.json();
-        console.log(posterData);
         if (posterData.message != "Poster not found") {
-          console.log(Boolean(posterData.data.isDraft));
           setIsDraft(Boolean(posterData.data.isDraft));
-          console.log("this is a poster");
           setIsLoading(false);
           return "poster";
         } else {
           try {
-            const url =
-              "http://localhost:8080/drafts/" + draftId ? draftId : poster.id;
+            const url = BACKEND + "drafts/" + draftId ? draftId : poster.id;
             const res = await fetch(url);
             if (res.ok) {
               const posterData = await res.json();
               if (posterData.message != "Poster not found") {
-                console.log("this is a draft");
                 setIsDraft(true);
                 setIsLoading(false);
                 return "draft";
@@ -145,7 +139,7 @@ export default function CreateImageModal() {
   const setCVFields = async (id: string) => {
     setIsLoading(true);
     try {
-      const url = "http://localhost:8080/drafts/" + id;
+      const url = BACKEND + "drafts/" + id;
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -190,7 +184,8 @@ export default function CreateImageModal() {
           },
         };
         const url =
-          "http://localhost:8080/drafts/draft/fromlink?userId=" +
+          BACKEND +
+          "drafts/draft/fromlink?userId=" +
           profile.id +
           "&startDate=" +
           poster.startDate!;
@@ -226,7 +221,7 @@ export default function CreateImageModal() {
     };
 
     try {
-      const url = "http://localhost:8080/drafts/draft/imgur";
+      const url = BACKEND + "drafts/draft/imgur";
 
       const formData = new FormData();
       formData.append("content", file);
@@ -267,8 +262,6 @@ export default function CreateImageModal() {
       }
 
       const output = await createImgurLink(file);
-      console.log("upload poster output");
-      console.log(output.content);
 
       setCVFields(output.id);
       setIsContent(true);
@@ -281,14 +274,12 @@ export default function CreateImageModal() {
     await updatePoster(poster, poster.id ? poster.id : draftId);
     setRefresh(!refresh);
     setShowTags(true);
-    console.log(isDraft);
   };
 
   // updates a draft with new info when a user clicks to tags or presses X
   const updatePoster = async (poster: IPosterObject, id: string) => {
-    console.log(id);
     try {
-      const url = "http://localhost:8080/posters/update/" + id;
+      const url = BACKEND + "posters/update/" + id;
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -313,7 +304,6 @@ export default function CreateImageModal() {
 
   const onClose = () => {
     if (poster.startDate && poster.title && (isContent || poster.content)) {
-      console.log(draftId);
       //popup u sure u wanna del this?
       setPopModalOpen(true);
     } else {

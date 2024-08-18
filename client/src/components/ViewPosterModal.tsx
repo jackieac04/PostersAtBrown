@@ -19,6 +19,7 @@ import {
 } from "./atoms/atoms";
 import { classNameTag } from "../functions/fetch";
 import PopupModal from "./PopupModal";
+import { BACKEND } from "../vars";
 
 interface viewProps {
   onClose: () => void;
@@ -77,7 +78,7 @@ export default function ViewPosterModal({
         try {
           //fetch savedposters
           const savedPosters = await fetch(
-            "http://localhost:8080/users/savedPosters/" + profile.id
+            BACKEND + "users/savedPosters/" + profile.id
           );
           //if poster in saved , set class to clicked
           if (savedPosters.ok) {
@@ -104,16 +105,16 @@ export default function ViewPosterModal({
     try {
       let posterRes;
       if (isDraft) {
-        posterRes = await fetch("http://localhost:8080/drafts/" + id);
+        posterRes = await fetch(BACKEND + "drafts/" + id);
       } else {
-        posterRes = await fetch("http://localhost:8080/posters/" + id);
+        posterRes = await fetch(BACKEND + "posters/" + id);
       }
       if (posterRes.ok) {
         const poster = await posterRes.json();
         // console.log(poster);
         if (poster.data.userId) {
           const userRes = await fetch(
-            "http://localhost:8080/users/" + poster.data.userId
+            BACKEND + "users/" + poster.data.userId
           );
           if (userRes.ok) {
             const user = await userRes.json();
@@ -145,7 +146,7 @@ export default function ViewPosterModal({
             },
           };
           const url =
-            "http://localhost:8080/users/unsavePoster?posterId=" +
+            BACKEND + "users/unsavePoster?posterId=" +
             id +
             "&userId=" +
             profile.id;
@@ -177,7 +178,7 @@ export default function ViewPosterModal({
             },
           };
           const url =
-            "http://localhost:8080/users/savePoster?posterId=" +
+            BACKEND + "users/savePoster?posterId=" +
             id +
             "&userId=" +
             profile.id;

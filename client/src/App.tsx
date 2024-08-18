@@ -27,6 +27,7 @@ import Profile from "./components/Profile";
 import { modalOpenState, profileState } from "./components/atoms/atoms";
 import { useRecoilState } from "recoil";
 import InterestsModal from "./components/InterestsModal";
+import { BACKEND } from "./vars";
 
 export default function App() {
   const [modalOpen, setModalOpen] = useRecoilState<string>(modalOpenState);
@@ -45,7 +46,7 @@ export default function App() {
   const findUser = async (id: string) => {
     if (id) {
       //if user id exists
-      const foundUser = await fetch("http://localhost:8080/users/" + id);
+      const foundUser = await fetch(BACKEND + "users/" + id);
 
       if (foundUser.ok) {
         const userValid = await foundUser.json();
@@ -91,9 +92,9 @@ export default function App() {
             setIsLoading(true);
             //check if user exists in the database with get user by id
             const userID = userInfo.id;
-            console.log("user id is: " + userID);
+            // console.log("user id is: " + userID);
             const found = await findUser(userID); //does the user exist?
-            console.log("is user found: " + found);
+            // console.log("is user found: " + found);
             if (!found) {
               //new user
               localStorage.setItem(
@@ -101,8 +102,8 @@ export default function App() {
                 localStorage.getItem("userProfileInitial")!
               );
               setProfile(userInfo); //set prof to google state
-              console.log("profile set to user info");
-              console.log(userInfo);
+              // console.log("profile set to user info");
+              // console.log(userInfo);
               setIsLoading(false);
               setInterestsState(true); //open interests modal
             }

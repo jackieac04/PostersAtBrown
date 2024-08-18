@@ -13,6 +13,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import InterestsModal from "./InterestsModal";
 import { IUser, createUser } from "../functions/fetch";
+import { BACKEND } from "../vars";
 
 export default function EditProfileModal({
   savedPosters,
@@ -32,10 +33,9 @@ export default function EditProfileModal({
 
     setIsLoading(true);
     try {
-      const url = "http://localhost:8080/posters/uploadToImgur";
+      const url = BACKEND + "posters/uploadToImgur";
 
       const formData = new FormData();
-      console.log(file);
       formData.append("content", file);
       const res = await axios.post(url, formData, config);
       setIsLoading(false);
@@ -61,7 +61,6 @@ export default function EditProfileModal({
       const file = target.files[0]; //getting the file object
       const output = await createImgurLink(file);
       setProfile({ ...profile, picture: output });
-      console.log(profile);
     }
   };
 
@@ -75,10 +74,6 @@ export default function EditProfileModal({
       return prevProfile;
     });
   };
-
-  useEffect(() => {
-    console.log(profile);
-  }, [profile]);
 
   return (
     <Modal closeOnOverlayClick={false} isOpen={true} onClose={onClose}>

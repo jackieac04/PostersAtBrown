@@ -13,6 +13,7 @@ import axios from "axios";
 import ViewPosterModal from "./ViewPosterModal";
 import PopupModal from "./PopupModal";
 import CreateImageModal from "./CreateImageModal";
+import { BACKEND } from "../vars";
 
 interface ProfileImageCardProps {
   title?: string;
@@ -88,15 +89,11 @@ export const ProfileImageCard: React.FC<ProfileImageCardProps> = ({
   const [, setPosterSrc] = useRecoilState(posterSrcState);
   const [popModalOpen, setPopModalOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    console.log("popup modal is: " + popModalOpen);
-  }, [popModalOpen]);
-
   const fetchSaved = async (profile: { id: string }, posterId: string) => {
     try {
       //fetch savedposters
       const savedPosters = await fetch(
-        "http://localhost:8080/users/savedPosters/" + profile.id
+        BACKEND + "users/savedPosters/" + profile.id
       );
       //if poster in saved , set class to clicked
       if (savedPosters.ok) {
@@ -114,16 +111,14 @@ export const ProfileImageCard: React.FC<ProfileImageCardProps> = ({
   };
   const getUserCreated = async () => {
     const createdResp = await fetch(
-      "http://localhost:8080/users/createdPosters/" + profile.id
+      BACKEND + "users/createdPosters/" + profile.id
     );
     if (createdResp.ok) {
       const created = await createdResp.json();
       //get each poster given id then set created
       const newCreatedPosters = [];
       for (const poster of created.data) {
-        const postersResp = await fetch(
-          "http://localhost:8080/posters/" + poster.id
-        );
+        const postersResp = await fetch(BACKEND + "posters/" + poster.id);
         if (postersResp.ok) {
           const posterData = await postersResp.json();
           newCreatedPosters.push(posterData.data);
@@ -169,7 +164,8 @@ export const ProfileImageCard: React.FC<ProfileImageCardProps> = ({
             },
           };
           const url =
-            "http://localhost:8080/users/unsavePoster?posterId=" +
+            BACKEND +
+            "users/unsavePoster?posterId=" +
             id +
             "&userId=" +
             userId.id;
@@ -201,7 +197,8 @@ export const ProfileImageCard: React.FC<ProfileImageCardProps> = ({
             },
           };
           const url =
-            "http://localhost:8080/users/savePoster?posterId=" +
+            BACKEND +
+            "users/savePoster?posterId=" +
             id +
             "&userId=" +
             userId.id;
@@ -220,36 +217,6 @@ export const ProfileImageCard: React.FC<ProfileImageCardProps> = ({
           }
         }
       }
-    }
-  };
-
-  const getPoster = async () => {
-    try {
-      const url = "http://localhost:8080/posters/" + posterId;
-      const res = await fetch(url);
-      console.log(res);
-      if (res.ok) {
-        const posterData = await res.json();
-        if (posterData.message != "Poster not found") {
-          return "poster";
-        } else {
-          try {
-            const url = "http://localhost:8080/drafts/" + posterId;
-            const res = await fetch(url);
-            console.log(res);
-            if (res.ok) {
-              const posterData = await res.json();
-              if (posterData.message != "Poster not found") {
-                return "draft";
-              }
-            }
-          } catch (error) {
-            return JSON.stringify(error);
-          }
-        }
-      }
-    } catch (error) {
-      return JSON.stringify(error);
     }
   };
 

@@ -14,6 +14,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { getPosters } from "./Happenings";
 import { IPosterObject } from "./CreateImageModal";
 import ErrorPopup from "./ErrorPopup";
+import { BACKEND } from "../vars";
 
 interface tagsProps {
   onClose: () => void;
@@ -58,13 +59,7 @@ export default function TagsModal({
   }, [poster]);
 
   useEffect(() => {
-    console.log("Poster updated:", poster);
-  }, [poster]);
-
-  useEffect(() => {
     const getPoster = async () => {
-      console.log(draftId);
-      console.log(poster.id);
       try {
         let id;
         if (poster.id === undefined) {
@@ -72,27 +67,21 @@ export default function TagsModal({
         } else {
           id = poster.id;
         }
-        console.log(id);
-        const url = "http://localhost:8080/posters/" + id;
+        const url = BACKEND + "posters/" + id;
         const res = await fetch(url);
-        console.log(res);
         if (res.ok) {
           const posterData = await res.json();
-          console.log("posterData: " + posterData);
           // posterdata doesnt print but res.ok does :(
           if (posterData.message != "Poster not found") {
-            console.log("this is a poster");
             return "poster";
           } else {
             try {
-              const url =
-                "http://localhost:8080/drafts/" + draftId ? draftId : poster.id;
+              const url = BACKEND + "drafts/" + draftId ? draftId : poster.id;
               const res = await fetch(url);
               // console.log(res);
               if (res.ok) {
                 const posterData = await res.json();
                 if (posterData.message != "Poster not found") {
-                  console.log("this is a draft");
                   return "draft";
                 }
               }
@@ -159,15 +148,10 @@ export default function TagsModal({
     };
 
     setPoster(updatedPoster);
-    console.log(updatedPoster.id);
-    console.log(draftId);
     await updatePoster(
       updatedPoster,
       updatedPoster.id ? updatedPoster.id : draftId
     );
-
-    console.log("updated poster");
-    console.log(updatedPoster);
 
     try {
       const config = {
@@ -175,10 +159,9 @@ export default function TagsModal({
           "Content-Type": "application/json",
         },
       };
-      console.log(draftId);
       const url = draftId
-        ? `http://localhost:8080/posters/create/${draftId}`
-        : `http://localhost:8080/posters/create/${updatedPoster.id}`;
+        ? BACKEND + `posters/create/${draftId}`
+        : BACKEND + `posters/create/${updatedPoster.id}`;
       const formData = new FormData();
 
       tags.forEach((tag) => {
@@ -224,11 +207,7 @@ export default function TagsModal({
           "Content-Type": "application/json",
         },
       };
-      console.log(poster.id);
-      const url = `http://localhost:8080/posters/update/${
-        draftId ? draftId : poster.id
-      }`;
-      console.log(url);
+      const url = BACKEND + `posters/update/${draftId ? draftId : poster.id}`;
       const formData = new FormData();
 
       tags.forEach((tag) => {
@@ -245,7 +224,7 @@ export default function TagsModal({
       }
 
       const res = await axios.put(url, formData, config);
-      console.log(res.data.data);
+
       setRefresh(!refresh);
       getPosters().then((data) => setSearchResults(data));
       setShowTags(false);
@@ -255,7 +234,6 @@ export default function TagsModal({
       setIsLoading(false);
       return Promise.resolve(res.data.data);
     } catch (error) {
-      console.log("made it here!");
       console.log(error);
       setErrorPopup(true);
       if (axios.isAxiosError(error) && error.response) {

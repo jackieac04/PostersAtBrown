@@ -12,6 +12,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import { useRecoilState } from "recoil";
 import { profileState } from "./atoms/atoms";
 import { IPoster } from "./Happenings";
+import { BACKEND } from "../vars";
 
 export default function CalendarModal({ onClose }) {
   const [savedPosters, setSavedPosters] = useState<IPoster[]>([]);
@@ -48,7 +49,7 @@ export default function CalendarModal({ onClose }) {
   const getUserLikes = async () => {
     try {
       const likesResp = await fetch(
-        "http://localhost:8080/users/savedPosters/" + profile.id
+        BACKEND + "users/savedPosters/" + profile.id
       );
       if (likesResp.ok) {
         const likes = await likesResp.json();
@@ -61,7 +62,7 @@ export default function CalendarModal({ onClose }) {
 
   const getUserCreated = async () => {
     const createdResp = await fetch(
-      "http://localhost:8080/users/createdPosters/" + profile.id
+      BACKEND + "users/createdPosters/" + profile.id
     );
     if (createdResp.ok) {
       const created = await createdResp.json();
@@ -69,7 +70,7 @@ export default function CalendarModal({ onClose }) {
       const newCreatedPosters = [];
       for (const poster of created.data) {
         const postersResp = await fetch(
-          "http://localhost:8080/posters/" + poster.id
+          BACKEND + "posters/" + poster.id
         );
         if (postersResp.ok) {
           const posterData = await postersResp.json();

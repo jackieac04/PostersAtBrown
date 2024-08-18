@@ -16,6 +16,7 @@ import {
 } from "./atoms/atoms";
 import axios from "axios";
 import { Dispatch, SetStateAction, useEffect } from "react";
+import { BACKEND } from "../vars";
 
 interface popupProps {
   posterId: string;
@@ -29,13 +30,9 @@ export default function PopupModal({ posterId, setPopModalOpen }: popupProps) {
   const [, setPosterSrc] = useRecoilState(posterSrcState);
   const [refresh, setRefresh] = useRecoilState(refreshState);
 
-  useEffect(() => {
-    console.log("id: " + posterId);
-  }, []);
-
   // const getPoster = async () => {
   //   try {
-  //     const url = "http://localhost:8080/posters/" + posterId;
+  //     const url = BACKEND + "posters/" + posterId;
   //     const res = await fetch(url);
   //     console.log(res);
   //     if (res.ok) {
@@ -44,7 +41,7 @@ export default function PopupModal({ posterId, setPopModalOpen }: popupProps) {
   //         return "poster";
   //       } else {
   //         try {
-  //           const url = "http://localhost:8080/drafts/" + posterId;
+  //           const url = BACKEND + "drafts/" + posterId;
   //           const res = await fetch(url);
   //           console.log(res);
   //           if (res.ok) {
@@ -79,10 +76,7 @@ export default function PopupModal({ posterId, setPopModalOpen }: popupProps) {
           },
         };
         const url =
-          "http://localhost:8080/posters/delete/" +
-          posterId +
-          "?userId=" +
-          profile.id;
+          BACKEND + "posters/delete/" + posterId + "?userId=" + profile.id;
 
         const res = await axios.delete(url, config);
 
@@ -114,7 +108,7 @@ export default function PopupModal({ posterId, setPopModalOpen }: popupProps) {
       //         "Content-Type": "application/json",
       //       },
       //     };
-      //     const url = "http://localhost:8080/drafts/delete/" + posterId;
+      //     const url = BACKEND + "drafts/delete/" + posterId;
 
       //     const res = await axios.delete(url, config);
 
