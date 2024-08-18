@@ -8,7 +8,7 @@ import { RecoilRoot } from "recoil";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <GoogleOAuthProvider clientId="991919879842-c6s2qvphphqjkjerp0l25bc047qcvmp4.apps.googleusercontent.com">
+  <GoogleOAuthProvider clientId="78307300358-bdvig20go0bsno04h5r5sgqjfetcc21u.apps.googleusercontent.com">
     <React.StrictMode>
       <BrowserRouter>
         <ChakraProvider>
