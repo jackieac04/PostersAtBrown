@@ -364,6 +364,7 @@ export default function Profile() {
         aria-label={"scrolls user to bottom of page"}
         onClick={scrollToTop}
       />
+      <ul></ul>
     </>
   );
 }

@@ -68,7 +68,7 @@ public class DraftService {
       System.out.println("associateResponse.isCompletedExceptionally() == false");
       // Save the Poster object to the database
       try {
-        HashMap suggestedFields = task.sendPost(poster.getContent());
+        HashMap<String, Object> suggestedFields = this.task.sendPost(poster.getContent());
         if (suggestedFields.get("title") == null) {
           poster.setTitle("Untitled");
         } else {

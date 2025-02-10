@@ -26,20 +26,24 @@ public class OCRAsyncTask {
     GCVParser parser = new GCVParser();
 
     // Use the CloudVisionTemplate to annotate the image
-    AnnotateImageResponse response = cloudVisionTemplate.analyzeImage(
-            resourceLoader.getResource(imageUrl), Feature.Type.TEXT_DETECTION);
+    AnnotateImageResponse response = this.cloudVisionTemplate.analyzeImage(
+            this.resourceLoader.getResource(imageUrl), Feature.Type.TEXT_DETECTION);
 
     if (response.hasError()) {
       System.out.println("Error: " + response.getError().getMessage());
+      System.out.println( response.getError().getCode());
+      System.out.println( response.getError().getDetails(0));
+
+
       return new HashMap<>();
     }
 
     // If text was detected, process the response
     if (!response.getTextAnnotationsList().isEmpty()) {
       List<EntityAnnotation> toParse = response.getTextAnnotationsList();
-      HashMap<String, Object> suggestedFields = parser.parseResult(toParse);
-      return suggestedFields;
+        return (HashMap<String, Object>) parser.parseResult(toParse);
     }
+
 
     return new HashMap<>();
   }

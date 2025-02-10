@@ -44,16 +44,20 @@ public class PosterService {
     try {
       associateResponse.get(); // Wait for the completion of associate to avoid race condition
     } catch (InterruptedException | ExecutionException e) {
-      System.err.println("Error: " + e.getMessage());
+
+      System.err.println("Error when creating: " + e.getMessage());
     }
     userService.removeFromDrafts(userID, poster);
 
     if (!associateResponse.isCompletedExceptionally()) {
       System.out.println(associateResponse);
+
+
       // Save the Poster object to the database
 
 
       if (poster.isPoster()) {
+
         if (posterRepository
             .findById(poster.getID())
             .isEmpty()) { // check if already exists in database
