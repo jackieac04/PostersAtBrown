@@ -36,6 +36,7 @@ public class PosterService {
 
   // @Async
   public ServiceResponse<Poster> createPoster(Poster poster, String userID) {
+    System.out.println("start of create poster");
     ServiceResponse<Poster> response;
     // Associate the poster with the user
     CompletableFuture<ServiceResponse<User>> associateResponse =

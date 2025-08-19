@@ -83,6 +83,7 @@ public class DraftController {
       @RequestBody MultipartFile content,
       @RequestParam(required = true) String userId,
       @RequestParam(required = true) String startDate) {
+    System.out.println("start of /draft/imgur");
     Draft poster = new Draft();
     ServiceResponse<String> imgurResponse = imgurService.uploadToImgur(content);
     poster.setContent(imgurResponse.getData());
