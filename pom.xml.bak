@@ -38,7 +38,8 @@
       <dependency>
         <groupId>com.google.cloud</groupId>
         <artifactId>libraries-bom</artifactId>
-        <version>26.4.0</version> <!-- Update to the latest stable version -->
+        <version>26.4.0</version>
+        <!-- Update to the latest stable version -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -62,6 +63,12 @@
         <version>${spring.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>6.1.0</version>
+        <scope>provided</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -87,11 +94,17 @@
       <artifactId>spring-cloud-gcp-starter-vision</artifactId>
     </dependency>
     <!-- Google Cloud Vision -->
-    <dependency>
-      <groupId>com.google.cloud</groupId>
-      <artifactId>google-cloud-vision</artifactId>
-      <version>3.45.0</version>
-    </dependency>
+
+        <dependency>
+          <groupId>com.google.cloud</groupId>
+          <artifactId>libraries-bom</artifactId>
+          <version>26.53.0</version> <!-- Use the latest version -->
+          <type>pom</type>
+          <scope>import</scope>
+        </dependency>
+
+
+
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
