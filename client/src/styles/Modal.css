@@ -198,27 +198,27 @@
 }
 
 .heart-icon {
-  background-image: url("heart.svg");
+  background-image: url("/heart.svg");
 }
 
 .heart-icon.clicked {
-  background-image: url("heart_filled.svg");
+  background-image: url("/heart_filled.svg");
 }
 
 .heart-icon:hover {
-  background-image: url("heart_partial.svg");
+  background-image: url("/heart_partial.svg");
 }
 
 .view-heart-icon {
-  background-image: url("heart.svg");
+  background-image: url("/heart.svg");
 }
 
 .view-heart-icon.clicked {
-  background-image: url("heart_filled.svg");
+  background-image: url("/heart_filled.svg");
 }
 
 .view-heart-icon:hover {
-  background-image: url("heart_partial.svg");
+  background-image: url("/heart_partial.svg");
 }
 
 .image-container {

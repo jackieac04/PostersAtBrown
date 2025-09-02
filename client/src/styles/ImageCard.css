@@ -1,3 +1,5 @@
+
+
 .profile-card {
   width: 30%;
   min-width: 280px;
@@ -227,9 +229,9 @@
 }
 
 .edit-icon {
-  background-image: url("edit.svg");
+  background-image: url("/edit.svg");
 }
 
 .close-icon {
-  background-image: url("x.svg");
+  background-image: url("/x.svg");
 }

@@ -38,10 +38,16 @@ export default function App() {
   const [hamburgerOpen, setHamburgerOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const login = useGoogleLogin({
-    onSuccess: (codeResponse) => setUser(codeResponse),
-    onError: (error) => console.log("Login Failed:", error),
-  });
+ const login = useGoogleLogin({
+  flow: "auth-code", // forces standard redirect
+  redirect_uri: "http://localhost:5173/auth/google/callback", // must match Google Cloud exactly
+  onSuccess: async (codeResponse) => {
+    console.log("Authorization code:", codeResponse.code);
+    setUser(codeResponse); // store code or exchange it for tokens
+  },
+  onError: (error) => console.log("Login Failed:", error),
+});
+
 
   const findUser = async (id: string) => {
     if (id) {
