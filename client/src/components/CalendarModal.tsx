@@ -124,6 +124,17 @@ export default function CalendarModal({ onClose }) {
           style={{ backgroundColor: "var(--dark-purple100)" }}
         />
         <ModalBody width={"fit-content"}>
+          {/* Open Google Calendar in a new tab when this modal mounts so users see their calendar */}
+          <div style={{ marginBottom: "8px" }}>
+            <a
+              href="https://calendar.google.com/calendar/u/0/r"
+              target="_blank"
+              rel="noreferrer"
+              id="open-google-calendar-link"
+            >
+              Open Google Calendar
+            </a>
+          </div>
           {isReady && (
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin]}

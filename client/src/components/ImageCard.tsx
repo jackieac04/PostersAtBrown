@@ -63,10 +63,6 @@ export const ImageCard: React.FC<ImageCardProps> = ({
     listMonths[new Date(JSON.stringify(startDate[1])).getMonth()];
   const month = monthName.substring(0, 3);
   const fullStartDate = `${monthName} ${startDate[2]}, ${startDate[0]}`;
-  let fullEndDate = null;
-  if (endDate) {
-    fullEndDate = `${monthName} ${endDate[2]}, ${endDate[0]}`;
-  }
   const weekday = listWeekdays[new Date(fullStartDate).getDay()];
   const [userId] = useRecoilState(profileState);
   const [isClicked, setIsClicked] = useState<boolean>(false);
@@ -97,7 +93,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
       fetchSaved(userId, id);
       // console.log("refresh");
     }
-  }, [refresh, userId, isClicked]);
+  }, [refresh, userId, isClicked, id]);
 
   const fetchSavedOnClose = async () => {
     if (userId) {
@@ -168,6 +164,32 @@ export const ImageCard: React.FC<ImageCardProps> = ({
             userId.id;
           const res = await axios.put(url, null, config);
           setRefresh(!refresh);
+          // open Google Calendar event creation with poster details
+          try {
+            const buildGCalDate = (d: number[]) => {
+              // d = [year, month (1-12), day, hour, minute]
+              const dt = new Date(d[0], d[1] - 1, d[2], d[3] ?? 0, d[4] ?? 0);
+              // format like 20250903T120000Z
+              return dt
+                .toISOString()
+                .replace(/[-:]/g, "")
+                .replace(/\.\d{3}Z$/, "Z");
+            };
+
+            const start = buildGCalDate(startDate);
+            const end = endDate ? buildGCalDate(endDate) : start;
+            const params = new URLSearchParams({
+              text: title || "Event",
+              dates: `${start}/${end}`,
+              details: description || "",
+              location: location || "",
+            });
+            const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&${params.toString()}`;
+            // open in new tab
+            window.open(gcalUrl, "_blank");
+          } catch (e) {
+            console.error("Error opening Google Calendar event:", e);
+          }
           return Promise.resolve(res.data.data);
         } catch (error) {
           if (axios.isAxiosError(error) && error.response) {
@@ -200,7 +222,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
   }
 
   const startTime = time(startDate);
-  let endTime = null;
+  let endTime: string | null = null;
   if (endDate) {
     endTime = time(endDate);
   }
@@ -255,16 +277,16 @@ export const ImageCard: React.FC<ImageCardProps> = ({
             <div id="location">{location}</div>
           </div>
         </div>
-        {modalOpen === "viewImage" && (
+    {modalOpen === "viewImage" && (
           <ViewPosterModal
             onClose={() => onClickView()}
             setClicked={setIsClicked}
             title={title}
             content={content}
-            startDate={fullStartDate}
-            endDate={fullEndDate!}
+      startDate={startDate}
+      endDate={endDate}
             startTime={startTime}
-            endTime={endTime!}
+      endTime={endTime || ""}
             location={location!}
             link={link!}
             description={description!}
