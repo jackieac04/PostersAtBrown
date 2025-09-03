@@ -165,6 +165,11 @@ export const ImageCard: React.FC<ImageCardProps> = ({
           const res = await axios.put(url, null, config);
           setRefresh(!refresh);
           try {
+            for (let i = 0; i < localStorage.length; i++) {
+              const key = localStorage.key(i);
+              const value = JSON.parse(localStorage.getItem(key));
+              console.log(`${key}:`, value);
+              }
             // visible confirmation that save succeeded
             // eslint-disable-next-line no-undef
             window.alert("Saved poster to app — attempting to add to Google Calendar...");
