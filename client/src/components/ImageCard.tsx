@@ -163,13 +163,11 @@ export const ImageCard: React.FC<ImageCardProps> = ({
             "&userId=" +
             userId.id;
           const res = await axios.put(url, null, config);
-          setRefresh(!refresh);
+          
+         
+          
           try {
-            for (let i = 0; i < localStorage.length; i++) {
-              const key = localStorage.key(i);
-              const value = JSON.parse(localStorage.getItem(key));
-              console.log(`${key}:`, value);
-              }
+           
             // visible confirmation that save succeeded
             // eslint-disable-next-line no-undef
             window.alert("Saved poster to app — attempting to add to Google Calendar...");
@@ -257,6 +255,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
                     // eslint-disable-next-line no-undef
                     window.alert("Event added to your Google Calendar.");
                   } catch (e) {
+                     setRefresh(!refresh);
                     console.log("Alert blocked or failed");
                   }
                   return Promise.resolve(res.data.data);
@@ -267,13 +266,16 @@ export const ImageCard: React.FC<ImageCardProps> = ({
                     errText = await resp.text();
                   } catch (e) {
                     console.log("Alert blocked or failed");
+                     setRefresh(!refresh);
                   }
                   console.log("Calendar API error", resp.status, errText);
                   try {
                     // eslint-disable-next-line no-undef
                     window.alert(`Calendar API error ${resp.status}: ${errText}`);
+                     
                   } catch (e) {
                     console.log("Alert blocked or failed");
+                    setRefresh(!refresh);
                   }
                   // if 401 -> token invalid/expired
                   if (resp.status === 401) {
@@ -281,18 +283,22 @@ export const ImageCard: React.FC<ImageCardProps> = ({
                     localStorage.removeItem("google_access_token");
                     try {
                       window.alert("Google calendar access expired. Please log in again to add events.");
+                      setRefresh(!refresh);
                     } catch (e) {
                       console.log("Alert blocked or failed");
+                      setRefresh(!refresh);
                     }
                   }
                   // fall back to template URL below
                 }
               } catch (err) {
                 console.log("Error creating event via Calendar API:", err);
+                 setRefresh(!refresh);
                 // fall through to template fallback
               }
             } else {
               console.log("No google_access_token found in localStorage — using template fallback.");
+              setRefresh(!refresh);
             }
 
             const params = new URLSearchParams({
