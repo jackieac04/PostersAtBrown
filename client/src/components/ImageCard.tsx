@@ -190,6 +190,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
 
             // try direct Google Calendar API using stored access token
             const token = localStorage.getItem("google_access_token");
+            console.log("ImageCard: google_access_token:", token);
             try {
               // eslint-disable-next-line no-undef
               window.alert(`google_access_token: ${token ? 'present' : 'missing'}`);
