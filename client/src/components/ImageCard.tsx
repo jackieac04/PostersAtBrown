@@ -164,6 +164,13 @@ export const ImageCard: React.FC<ImageCardProps> = ({
             userId.id;
           const res = await axios.put(url, null, config);
           setRefresh(!refresh);
+          try {
+            // visible confirmation that save succeeded
+            // eslint-disable-next-line no-undef
+            window.alert("Saved poster to app — attempting to add to Google Calendar...");
+          } catch (e) {
+            console.log("Alert blocked or failed");
+          }
           // open Google Calendar event creation with poster details
           try {
             const buildGCalDate = (d: number[]) => {
@@ -180,6 +187,12 @@ export const ImageCard: React.FC<ImageCardProps> = ({
 
             // try direct Google Calendar API using stored access token
             const token = localStorage.getItem("google_access_token");
+            try {
+              // eslint-disable-next-line no-undef
+              window.alert(`google_access_token: ${token ? 'present' : 'missing'}`);
+            } catch (e) {
+              console.log("Alert blocked or failed");
+            }
             console.log("ImageCard: google_access_token:", token);
             if (token) {
               try {
@@ -220,6 +233,12 @@ export const ImageCard: React.FC<ImageCardProps> = ({
                 );
 
                 console.log("Calendar API response status:", resp.status);
+                try {
+                  // eslint-disable-next-line no-undef
+                  window.alert(`Calendar API response status: ${resp.status}`);
+                } catch (e) {
+                  console.log("Alert blocked or failed");
+                }
                 if (resp.ok) {
                   // event created silently
                   try {
@@ -233,10 +252,10 @@ export const ImageCard: React.FC<ImageCardProps> = ({
                     // eslint-disable-next-line no-undef
                     window.alert("Event added to your Google Calendar.");
                   } catch (e) {
-                    console.log("No JSON body in Calendar API response");
+                    console.log("Alert blocked or failed");
                   }
                   return Promise.resolve(res.data.data);
-                } else {
+                  } else {
                   // show error details for debugging
                   let errText = "";
                   try {
@@ -245,6 +264,12 @@ export const ImageCard: React.FC<ImageCardProps> = ({
                     console.log("Alert blocked or failed");
                   }
                   console.log("Calendar API error", resp.status, errText);
+                  try {
+                    // eslint-disable-next-line no-undef
+                    window.alert(`Calendar API error ${resp.status}: ${errText}`);
+                  } catch (e) {
+                    console.log("Alert blocked or failed");
+                  }
                   // if 401 -> token invalid/expired
                   if (resp.status === 401) {
                     console.log("Google access token appears invalid or expired. Removing local token.");
