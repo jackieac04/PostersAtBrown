@@ -6,9 +6,6 @@ import {
   ModalOverlay,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
 import { useRecoilState } from "recoil";
 import { profileState } from "./atoms/atoms";
 import { IPoster } from "./Happenings";
@@ -19,10 +16,23 @@ export default function CalendarModal({ onClose }) {
   const [createdPosters, setCreatedPosters] = useState<IPoster[]>([]);
   const [profile] = useRecoilState(profileState);
   const [isReady, setIsReady] = useState(false);
-  const [events, setEvents] = useState<
+  const [ setEvents] = useState<
     { title: string; start: number[]; end: number[] }[]
   >([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // best-effort: attempt to open Google Calendar in a new tab when modal mounts
+    // some browsers may block this as a popup; the visible link is provided as a fallback
+    try {
+      const win = window.open("https://calendar.google.com/calendar/u/0/r", "_blank");
+      if (win) {
+        win.focus();
+      }
+    } catch (e) {
+      // ignore popup block errors
+    }
+  }, []);
 
   useEffect(() => {
     setIsReady(false);
@@ -100,16 +110,7 @@ export default function CalendarModal({ onClose }) {
     setEvents(newEvents);
   };
 
-  const handleEventClick = (info) => {
-    const startDate = info.event.start;
-
-    // Assuming you want to navigate to the dayGrid view for the clicked event
-    if (startDate) {
-      // const formattedStartDate = startDate.toISOString(); // You might need to format it based on your API's requirements
-      info.view.calendar.gotoDate(startDate);
-      info.view.calendar.changeView("timeGridDay");
-    }
-  };
+ 
   return isLoading ? (
     <div className="loading-screen">
       <img className="loading-gif" src="/loading.gif" />
@@ -135,25 +136,7 @@ export default function CalendarModal({ onClose }) {
               Open Google Calendar
             </a>
           </div>
-          {isReady && (
-            <FullCalendar
-              plugins={[dayGridPlugin, timeGridPlugin]}
-              initialView="dayGridMonth"
-              events={events}
-              eventBackgroundColor="var(--dark-purple100)"
-              eventClick={(info) => handleEventClick(info)}
-              views={{
-                timeGrid: { buttonText: "Week" },
-                dayGrid: { buttonText: "Month" },
-                timeGridDay: { buttonText: "Day" },
-              }}
-              headerToolbar={{
-                left: "prev,next today",
-                center: "title",
-                right: "timeGridDay,timeGridWeek,dayGridMonth",
-              }}
-            />
-          )}
+         
         </ModalBody>
       </ModalContent>
     </Modal>

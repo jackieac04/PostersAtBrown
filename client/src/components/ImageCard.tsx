@@ -175,9 +175,59 @@ export const ImageCard: React.FC<ImageCardProps> = ({
                 .replace(/[-:]/g, "")
                 .replace(/\.\d{3}Z$/, "Z");
             };
-
             const start = buildGCalDate(startDate);
             const end = endDate ? buildGCalDate(endDate) : start;
+
+            // try direct Google Calendar API using stored access token
+            const token = localStorage.getItem("google_access_token");
+            if (token) {
+              try {
+                const eventBody: Record<string, unknown> = {
+                  summary: title || "Event",
+                  location: location || undefined,
+                  description: description || undefined,
+                  start: {
+                    dateTime: new Date(
+                      startDate[0],
+                      startDate[1] - 1,
+                      startDate[2],
+                      startDate[3] ?? 0,
+                      startDate[4] ?? 0
+                    ).toISOString(),
+                  },
+                  end: {
+                    dateTime: new Date(
+                      (endDate ? endDate[0] : startDate[0]),
+                      (endDate ? endDate[1] - 1 : startDate[1] - 1),
+                      (endDate ? endDate[2] : startDate[2]),
+                      (endDate ? endDate[3] ?? 0 : startDate[3] ?? 0),
+                      (endDate ? endDate[4] ?? 0 : startDate[4] ?? 0)
+                    ).toISOString(),
+                  },
+                };
+
+                const resp = await fetch(
+                  "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+                  {
+                    method: "POST",
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(eventBody),
+                  }
+                );
+                if (resp.ok) {
+                  // event created silently
+                  // optionally notify user
+                  return Promise.resolve(await res.data.data);
+                }
+                // if token request failed, fall back to template URL below
+              } catch (err) {
+                console.error("Error creating event via Calendar API:", err);
+              }
+            }
+
             const params = new URLSearchParams({
               text: title || "Event",
               dates: `${start}/${end}`,
@@ -185,7 +235,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
               location: location || "",
             });
             const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&${params.toString()}`;
-            // open in new tab
+            // open in new tab as fallback
             window.open(gcalUrl, "_blank");
           } catch (e) {
             console.error("Error opening Google Calendar event:", e);

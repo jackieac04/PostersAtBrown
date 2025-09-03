@@ -31,7 +31,7 @@ import { BACKEND } from "./vars";
 
 export default function App() {
   const [modalOpen, setModalOpen] = useRecoilState<string>(modalOpenState);
-  const [user, setUser] = useState<CredentialResponse>();
+  const [user, setUser] = useState<any>();
   const [profile, setProfile] = useRecoilState(profileState);
   const [interestsState, setInterestsState] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,11 +39,15 @@ export default function App() {
   const navigate = useNavigate();
 
  const login = useGoogleLogin({
-  flow: "auth-code", // forces standard redirect
-  redirect_uri: "http://localhost:5173/auth/google/callback", // must match Google Cloud exactly
-  onSuccess: async (codeResponse) => {
-    console.log("Authorization code:", codeResponse.code);
-    setUser(codeResponse); // store code or exchange it for tokens
+  // use implicit flow so the client receives an access token directly
+  flow: "implicit",
+  scope: "openid profile email https://www.googleapis.com/auth/calendar.events",
+  onSuccess: (tokenResponse) => {
+    // tokenResponse should contain access_token in implicit flow
+    setUser(tokenResponse);
+    if ((tokenResponse as any).access_token) {
+      localStorage.setItem("google_access_token", (tokenResponse as any).access_token);
+    }
   },
   onError: (error) => console.log("Login Failed:", error),
 });
