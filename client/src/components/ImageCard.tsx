@@ -84,7 +84,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
         setIsClicked(clicked);
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -180,7 +180,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
 
             // try direct Google Calendar API using stored access token
             const token = localStorage.getItem("google_access_token");
-            console.debug("ImageCard: google_access_token:", token);
+            console.log("ImageCard: google_access_token:", token);
             if (token) {
               try {
                 const eventBody: Record<string, unknown> = {
@@ -219,21 +219,21 @@ export const ImageCard: React.FC<ImageCardProps> = ({
                   }
                 );
 
-                console.debug("Calendar API response status:", resp.status);
+                console.log("Calendar API response status:", resp.status);
                 if (resp.ok) {
                   // event created silently
                   try {
                     const data = await resp.json();
-                    console.info("Event created on Google Calendar:", data);
+                    console.log("Event created on Google Calendar:", data);
                   } catch (e) {
-                    console.info("Event created (no JSON body)");
+                    console.log("Event created (no JSON body)");
                   }
                   // small user feedback
                   try {
                     // eslint-disable-next-line no-undef
                     window.alert("Event added to your Google Calendar.");
                   } catch (e) {
-                    console.debug("No JSON body in Calendar API response");
+                    console.log("No JSON body in Calendar API response");
                   }
                   return Promise.resolve(res.data.data);
                 } else {
@@ -242,27 +242,27 @@ export const ImageCard: React.FC<ImageCardProps> = ({
                   try {
                     errText = await resp.text();
                   } catch (e) {
-                    console.debug("Alert blocked or failed");
+                    console.log("Alert blocked or failed");
                   }
-                  console.error("Calendar API error", resp.status, errText);
+                  console.log("Calendar API error", resp.status, errText);
                   // if 401 -> token invalid/expired
                   if (resp.status === 401) {
-                    console.warn("Google access token appears invalid or expired. Removing local token.");
+                    console.log("Google access token appears invalid or expired. Removing local token.");
                     localStorage.removeItem("google_access_token");
                     try {
                       window.alert("Google calendar access expired. Please log in again to add events.");
                     } catch (e) {
-                      console.debug("Alert blocked or failed");
+                      console.log("Alert blocked or failed");
                     }
                   }
                   // fall back to template URL below
                 }
               } catch (err) {
-                console.error("Error creating event via Calendar API:", err);
+                console.log("Error creating event via Calendar API:", err);
                 // fall through to template fallback
               }
             } else {
-              console.debug("No google_access_token found in localStorage — using template fallback.");
+              console.log("No google_access_token found in localStorage — using template fallback.");
             }
 
             const params = new URLSearchParams({
@@ -275,7 +275,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
             // open in new tab as fallback
             window.open(gcalUrl, "_blank");
           } catch (e) {
-            console.error("Error opening Google Calendar event:", e);
+            console.log("Error opening Google Calendar event:", e);
           }
           return Promise.resolve(res.data.data);
         } catch (error) {
